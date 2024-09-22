@@ -96,7 +96,16 @@ namespace Week3_01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            float rotationSpeed = MathHelper.ToRadians(45f); 
+            Matrix rotationMatrix = Matrix.CreateRotationY(rotationSpeed * deltaTime);
+
+            Matrix translationToOrigin = Matrix.CreateTranslation(-0.5f, -0.5f, -0.5f);
+            Matrix translationBack = Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+
+            m_world = translationBack * rotationMatrix * translationToOrigin * m_world;
 
             base.Update(gameTime);
         }
