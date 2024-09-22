@@ -37,12 +37,18 @@ namespace Week3_01
 
         protected override void LoadContent()
         {
-            VertexPositionColor[] vertices = new VertexPositionColor[3];
-            vertices[0] = new VertexPositionColor(new Vector3(0, 1, 0), Color.Red);
-            vertices[1] = new VertexPositionColor(new Vector3(+0.5f, 0, 0), Color.Green);
-            vertices[2] = new VertexPositionColor(new Vector3(-0.5f, 0, 0), Color.Blue);
+            VertexPositionColor[] vertices = new VertexPositionColor[8];
+            vertices[0] = new VertexPositionColor(new Vector3(-0.2f, -0.2f, 0), Color.Red);
+            vertices[1] = new VertexPositionColor(new Vector3(0.3f, 1.0f, 0), Color.Green);
+            vertices[2] = new VertexPositionColor(new Vector3(0.4f, 0.5f, 0), Color.Blue);
+            vertices[3] = new VertexPositionColor(new Vector3(0.7f, 0.8f, 0), Color.Yellow);
+            vertices[4] = new VertexPositionColor(new Vector3(0.8f, 0.4f, 0), Color.Cyan);
+            vertices[5] = new VertexPositionColor(new Vector3(1.0f, 0.6f, 0), Color.Magenta);
+            vertices[6] = new VertexPositionColor(new Vector3(1.0f, 0.2f, 0), Color.Orange);
+            vertices[7] = new VertexPositionColor(new Vector3(1.5f, 0.6f, 0), Color.Purple);
 
-            m_vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
+
+            m_vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 8, BufferUsage.WriteOnly);
             m_vertexBuffer.SetData<VertexPositionColor>(vertices);
         }
 
@@ -74,7 +80,7 @@ namespace Week3_01
             foreach (EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                GraphicsDevice.DrawPrimitives(PrimitiveType.LineStrip, 0, 8);
             }
             base.Draw(gameTime);
             #endregion Render
