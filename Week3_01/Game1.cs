@@ -6,11 +6,9 @@ namespace Week3_01
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        GraphicsDeviceManager m_device;
-        BasicEffect m_basicEffect;
-        VertexBuffer m_vertexBuffer;
+        private GraphicsDeviceManager m_device;
+        private VertexBuffer m_vertexBuffer;
+        private Effect m_myShader;
 
         private Matrix m_world = Matrix.Identity;
         private Matrix m_view = Matrix.Identity;
@@ -25,11 +23,11 @@ namespace Week3_01
 
         protected override void Initialize()
         {
-            m_basicEffect = new BasicEffect(GraphicsDevice);
+            m_myShader = Content.Load<Effect>("MyShader");
 
             m_world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
             m_view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.Up);
-            m_projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), m_device.GraphicsDevice.Viewport.AspectRatio, 0.1f, 100f);
+            m_projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), m_device.GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
 
 
             base.Initialize();
@@ -59,10 +57,7 @@ namespace Week3_01
         protected override void Draw(GameTime gameTime)
         {
             #region ConfigureBasicEffect
-            m_basicEffect.World = m_world;
-            m_basicEffect.View = m_view;
-            m_basicEffect.Projection = m_projection;
-            m_basicEffect.VertexColorEnabled = true;
+            m_myShader.Parameters["WorldViewProjection"].SetValue(m_world * m_view * m_projection);
             #endregion ConfigureBasicEffect
 
             #region ConfigureDevice
@@ -71,7 +66,7 @@ namespace Week3_01
             #endregion ConfigureDevice
 
             #region Render
-            foreach (EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
+            foreach (EffectPass pass in m_myShader.Techniques["BasicColorDrawing"].Passes)
             {
                 pass.Apply();
                 GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
